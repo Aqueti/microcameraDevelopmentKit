@@ -21,41 +21,21 @@ def printHelp():
 def main():
         inputs=sys.argv[1:]
         if len(inputs)==3:
-            if inputs[2]==str(1):
-                cmd="gst-launch-1.0 -e nvcamerasrc intent=3 sensor-id="
-                cmd=cmd+str(inputs[0])+" num-buffers="+str(inputs[1])
-                cmd=cmd+""" fpsRange=\"60 60\""""
-                cmd=cmd+" ! 'video/x-raw(memory:NVMM), width=(int)3864, height=(int)2174, format=(string)I420, "
-                cmd=cmd+"framerate=(fraction)60/1' ! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM),"
-                cmd=cmd+"format=(string)I420' ! omxh264enc ! 'video/x-h264, "
-                cmd=cmd+"stream-format=(string)byte-stream' ! filesink location=grabVid.h264"
+            sid=inputs[0]
+            hostip=inputs[1]
+            port=5000
+            if inputs[2]==str(0):
+                cmd="gst-launch-1.0  nvcamerasrc fpsRange=\"30.0 30.0\" sensor-id="+str(sid)+"' ! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080,"
+                cmd=cmd+"format=(string)I420, framerate=(fraction)30/1'  ! nvjpegenc ! rtpjpegpay ! udpsink host=$hostip port=$port"
                 subprocess.call(cmd,shell=True)
-            elif inputs[2]==str(2):
-                cmd="gst-launch-1.0 -e nvcamerasrc intent=3 sensor-id="
-                cmd=cmd+str(inputs[0])+" num-buffers="+str(inputs[1])
-                cmd=cmd+""" fpsRange=\"120 120\""""
-                cmd=cmd+" ! 'video/x-raw(memory:NVMM), width=(int)1932, height=(int)1094, format=(string)I420, "
-                cmd=cmd+"framerate=(fraction)120/1' ! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM),"
-                cmd=cmd+"format=(string)I420' ! omxh264enc ! 'video/x-h264, "
-                cmd=cmd+"stream-format=(string)byte-stream' ! filesink location=grabVid.h264"
-                subprocess.call(cmd,shell=True)
-            elif inputs[2]==str(3):
-                cmd="gst-launch-1.0 -e nvcamerasrc intent=3 sensor-id="
-                cmd=cmd+str(inputs[0])+" num-buffers="+str(inputs[1])
-                cmd=cmd+""" fpsRange=\"120 120\""""
-                cmd=cmd+" ! 'video/x-raw(memory:NVMM), width=(int)1288, height=(int)734, format=(string)I420, "
-                cmd=cmd+"framerate=(fraction)120/1' ! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM),"
-                cmd=cmd+"format=(string)I420' ! omxh264enc ! 'video/x-h264, "
-                cmd=cmd+"stream-format=(string)byte-stream' ! filesink location=grabVid.h264"
-                subprocess.call(cmd,shell=True)
-            elif inputs[2]==str(4):
-                cmd="gst-launch-1.0 -e nvcamerasrc intent=3 sensor-id="
-                cmd=cmd+str(inputs[0])+" num-buffers="+str(inputs[1])
-                cmd=cmd+""" fpsRange=\"240 240\""""
-                cmd=cmd+" ! 'video/x-raw(memory:NVMM), width=(int)1288, height=(int)546, format=(string)I420, "
-                cmd=cmd+"framerate=(fraction)240/1' ! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM),"
-                cmd=cmd+"format=(string)I420' ! omxh264enc ! 'video/x-h264, "
-                cmd=cmd+"stream-format=(string)byte-stream' ! filesink location=grabVid.h264"
+            elif inputs[2]==str(1):
+                fname=test.h264
+                #h264 encode+stream over network
+                cmd="gst-launch-1.0 -e nvcamerasrc num-buffers=300  fpsRange=\"30.0 30.0\" sensor-id="+str(sid)
+                cmd=cmd+"! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080, format=(string)I420, framerate=(fraction)30/1' "
+                cmd=cmd+"! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM), format=(string)I420' ! tee name=streams streams. ! omxh264enc ! "
+                cmd=cmd+"'video/x-h264, stream-format=(string)byte-stream' ! h264parse ! rtph264pay mtu=1400 ! udpsink host=$hostip port=$port streams. "
+                cmd=cmd+"! omxh264enc bitrate=8000000 ! 'video/x-h264, stream-format=(string)byte-stream' ! filesink location=$fname"
                 subprocess.call(cmd,shell=True)
             else:
                 printHelp()
