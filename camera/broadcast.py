@@ -21,10 +21,13 @@ def main(argv):
     fmt=0
     port=5000
     try:
-      opts, args = getopt.getopt(argv,"si:fp",["sid","ip=","format","port"])
+      opts, args = getopt.getopt(argv,"hsi:fp",["help","sid","ip=","format","port"])
     except getopt.GetoptError:
       printHelp()
       sys.exit(2)
+    print(opts)
+    print(args)
+    sys.exit()
     for opt, arg in opts:
       if opt in ('-h', '--help'):
          printHelp()
@@ -52,7 +55,5 @@ def main(argv):
          cmd=cmd+hostip+ " port="port+" streams. "
          cmd=cmd+"! omxh264enc bitrate=8000000 ! 'video/x-h264, stream-format=(string)byte-stream' ! filesink location=$fname"
          subprocess.call(cmd,shell=True)
-
-
 if __name__ == '__main__':
         main(sys.argv[1:])
