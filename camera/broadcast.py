@@ -38,7 +38,7 @@ def main(argv):
          fmt = arg
       elif opt in ("-p", "--port"):
          port = arg
-    if hostip==0
+    if hostip==0:
         printHelp()
         sys.exit(2)
     if fmt==0:
