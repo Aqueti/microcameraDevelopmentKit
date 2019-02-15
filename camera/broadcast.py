@@ -42,8 +42,8 @@ def main(argv):
         printHelp()
         sys.exit(2)
     if fmt==0:
-        cmd="gst-launch-1.0  nvcamerasrc fpsRange=\"30.0 30.0\" sensor-id="+str(sid)+"' ! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080,"
-        cmd=cmd+"format=(string)I420, framerate=(fraction)30/1'  ! nvvidconv flip-method=2 !"
+        cmd="gst-launch-1.0  nvcamerasrc fpsRange=\"30.0 30.0\" sensor-id="+str(sid)+" ! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080,"
+        cmd=cmd+"format=(string)I420, framerate=(fraction)30/1'  ! nvvidconv flip-method=2 "
         cmd=cmd+"! nvjpegenc ! rtpjpegpay ! udpsink host= "+hostip +" port="+str(port)
         subprocess.call(cmd,shell=True)
     elif fmt==1:
