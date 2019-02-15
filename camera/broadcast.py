@@ -52,7 +52,6 @@ def main(argv):
          cmd=cmd+"! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080, format=(string)I420, framerate=(fraction)30/1' "
          cmd=cmd+"! nvvidconv flip-method=2 ! 'video/x-raw(memory:NVMM), format=(string)I420' ! tee name=streams streams. ! omxh264enc ! "
          cmd=cmd+"'video/x-h264, stream-format=(string)byte-stream' ! h264parse ! rtph264pay mtu=1400 ! udpsink host="
-         cmd=cmd+hostip+ " port="port+" streams. "
          cmd=cmd+"! omxh264enc bitrate=8000000 ! 'video/x-h264, stream-format=(string)byte-stream' ! filesink location=$fname"
          subprocess.call(cmd,shell=True)
 if __name__ == '__main__':
