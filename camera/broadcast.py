@@ -20,14 +20,12 @@ def main(argv):
     sid=0
     fmt=0
     port=5000
+    hostip=0
     try:
-      opts, args = getopt.getopt(argv,"hsi:fp",["help","sid","ip=","format","port"])
+      opts, args = getopt.getopt(argv,"hs:i:f:p:",["help","sid","ip=","format","port"])
     except getopt.GetoptError:
       printHelp()
       sys.exit(2)
-    print(opts)
-    print(args)
-    sys.exit()
     for opt, arg in opts:
       if opt in ('-h', '--help'):
          printHelp()
@@ -40,6 +38,9 @@ def main(argv):
          fmt = arg
       elif opt in ("-p", "--port"):
          port = arg
+    if hostip==0
+        printHelp()
+        sys.exit(2)
     if fmt==0:
         cmd="gst-launch-1.0  nvcamerasrc fpsRange=\"30.0 30.0\" sensor-id="+str(sid)+"' ! 'video/x-raw(memory:NVMM), width=(int)1920, height=(int)1080,"
         cmd=cmd+"format=(string)I420, framerate=(fraction)30/1'  ! nvvidconv flip-method=2 !"
