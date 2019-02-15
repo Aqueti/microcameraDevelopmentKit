@@ -1,0 +1,4 @@
+receive.cmd is a windows script for receiving a stream from the on camera broadcast script. gstreamer needs to be installed, see 
+https://gstreamer.freedesktop.org/documentation/installing/on-windows.html The command runs from the gstreamer bin directory
+
+receive.sh is a linux script for receiving a broadcast stream. 
