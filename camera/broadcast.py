@@ -26,7 +26,7 @@ def main(argv):
       printHelp()
       sys.exit(2)
     for opt, arg in opts:
-      if opt == in ('-h', '--help'):
+      if opt in ('-h', '--help'):
          printHelp()
          sys.exit()
       elif opt in ("-s", "--sid"):
