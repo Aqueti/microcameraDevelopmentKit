@@ -52,9 +52,7 @@ def main(argv):
          cmd=cmd+hostip+ " port="port+" streams. "
          cmd=cmd+"! omxh264enc bitrate=8000000 ! 'video/x-h264, stream-format=(string)byte-stream' ! filesink location=$fname"
          subprocess.call(cmd,shell=True)
-     else:
-          printHelp()
 
 
 if __name__ == '__main__':
-        main()
+        main(sys.argv[1:])
